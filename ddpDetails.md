@@ -1,0 +1,14 @@
+# Distributed Data Parallel 
+We need distibuted training to save the time by increasing the amount of compute.This will help us train our model faster.When model become larger, it might be difficult to fit in a single GPU, so we have to think about distributed training via model paralle or FSDP.
+
+For this example we will focus on very simple model, so that we can focus on distributed training aspects of the code.
+
+## Understanding the Distrbuted Data Parallel Framework
+
+
+n a non distributed training, we have a model on one GPU.And during the training process, the model receives an InputBatch from the DataLoader,does the forward pass to calculate the loss, does the backward pass to calcualte the parameter gradients which then the optimizer uses to update the model.
+Now, if we distribute this training job to four GPUS,DDP launches one process per GPU, where each process has its own local copy of the model.And as the word suggets, all replicas of the model and the Optimizers are identical to each other.Not only are the intial model parameters are the same,even the Optimizers uses the same random seed.DDP internally maintains this synchronization, through out the training process.
+Now at this stage each GPU process has the same model and the only thing we need to change is our data.
+
+so like before, we get our InputBatch from the DataLoader, but this time we also use DistributedSampler.The sampler ensures that each process receives different inputs which is the data parallel in DDP. We are now concurrently procesing effectively four times the data compared to single-GPU training.At each process, the model receives a different input, locally runs the forward and backward pass.And becasue the inputs were different, the gradients that are now accumulated are also different.Running an optimizer step at this point would result in different parameters across our devices and we will have four distinct models, instead of single distributed model.So, at this stage DDP,initiated the synchronization step.Gradients from all the replicas are aggregated using the bucketed Ring-AllReduce algorithm.This algorithm overlaps gradient computation with communication.The synchronization step doesnt wait for all the gradients to be computed,instead it start communication along the ring, while the backward pass is still running which ensures that our GPU is always running and not idle.Now each model replica has the same gradients.
+Running the optimizer step now will update all the replica's parameters to the same values.When we started, the replicas across all processes were identical and now at the end they continue to remain in sync.This concludes on DDP training step and the identical replicas are ready for the next iteration.
