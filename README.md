@@ -1,0 +1,2 @@
+# PyTorch Distributed Data Parallel test in Early Access Platform
+This repository contains the iinformation about how to run your training program utilizing the PyTorch DDP framework. The work is still in progress.Any suggestions will be accepted!
