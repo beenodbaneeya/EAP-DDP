@@ -84,7 +84,7 @@ qsu can be used for both batch jobs (submitting a script to run in the backgroun
 Once , you are inside the compute node, if you use this command `uname -a` , it will show that our compute node has an aarch64 (also sometimes called ARM64 or ARMv8) architecture. Since, we have a different architecture on the login nodes and the compute node, we need to be careful of softwares that we might want to run on the compute node. i.e. they should be specific to aarch64 and not x86_64.
 
 Now that we allocate the resources and understand the architecture, lets check if we can see the GPUs on the compute node. We can use this command `nvidia-smi` to view the GPU available on the compute node.Below is the screenshot of it. You can also use this command to get more information about the cuda `nvcc --version`. 
-![output:nvidia-smi](nvidia-smi.png)
+![output:nvidia-smi](https://github.com/beenodbaneeya/EAP-DDP/blob/main/nvidia-smi.png)
 
 
 ## Setting up the necessary environment 
@@ -253,7 +253,7 @@ deactivate
 
 output:
 
-![output:nvidia-smi](singleGPuOutput.png)
+![output:nvidia-smi](https://github.com/beenodbaneeya/EAP-DDP/blob/main/singleGpuOutput.png)
 
 
 
@@ -535,7 +535,7 @@ deactivate
 
 output:
 
-![output:nvidia-smi](multiGpusOutput.png)
+![output:nvidia-smi](https://github.com/beenodbaneeya/EAP-DDP/blob/main/multiGpusOutput.png)
 
 
 ## Distributed Data Parallel (DDP) in EAP utilizing multiple nodes and multiple GPUs
